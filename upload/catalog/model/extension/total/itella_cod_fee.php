@@ -29,10 +29,10 @@ class ModelExtensionTotalItellaCodFee extends Model
 		if ($status) {
 			$this->load->language('extension/total/itella_cod_fee');
 
-			$fee = (float)$this->config->get('itella_cod_fee_fee_flat');
+			$fee = (float) $this->config->get('itella_cod_fee_fee_flat');
 			$title_postfix = '';
 			if ($this->config->get('itella_cod_fee_fee_type')) { // percentage
-				$title_postfix = ' ' . (float)$this->config->get('itella_cod_fee_fee_perc') . '%';
+				$title_postfix = ' ' . (float) $this->config->get('itella_cod_fee_fee_perc') . '%';
 				$fee = $sub_total * ((float) $this->config->get('itella_cod_fee_fee_perc') / 100);
 			}
 

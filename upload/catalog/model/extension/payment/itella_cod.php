@@ -1,15 +1,17 @@
 <?php
-class ModelExtensionPaymentItellaCOD extends Model {
-	public function getMethod($address, $total) {
-		$this->load->language('extension/payment/itella_cod');
+class ModelExtensionPaymentItellaCOD extends Model
+{
+  public function getMethod($address, $total)
+  {
+    $this->load->language('extension/payment/itella_cod');
 
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('itella_cod_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+    $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int) $this->config->get('itella_cod_geo_zone_id') . "' AND country_id = '" . (int) $address['country_id'] . "' AND (zone_id = '" . (int) $address['zone_id'] . "' OR zone_id = '0')");
 
     $status = true;
 
-    $shipping_methods = $this->config->get('itella_cod_shipping_options');
+    $shipping_methods = json_decode($this->config->get('itella_cod_shipping_options'));
 
-    if(!$shipping_methods) {
+    if (!$shipping_methods) {
       $shipping_methods = array();
     }
 
@@ -27,38 +29,38 @@ class ModelExtensionPaymentItellaCOD extends Model {
     }
 
     if ($this->config->get('itella_cod_total') > 0 && $this->config->get('itella_cod_total') > $total) {
-			$status = false;
+      $status = false;
     }
-    
+
     if (!$this->cart->hasShipping()) {
-			$status = false;
+      $status = false;
     }
-    
+
     if ($this->config->get('itella_cod_geo_zone_id') && !$query->num_rows) {
-			$status = false;
+      $status = false;
     }
 
     $method_data = array();
 
-    $terms_options = $this->config->get('itella_cod_terms');
+    $terms_options = json_decode($this->config->get('itella_cod_terms'), true);
 
     $terms = '';
     if ($terms_options && isset($terms_options[$this->config->get('config_language_id')])) {
       $terms = $terms_options[$this->config->get('config_language_id')];
     }
 
-		if ($status) {
-			$method_data = array(
-				'code'       => 'itella_cod',
-				'title'      => $this->language->get('text_title'),
-				'terms'      => $terms,
-				'sort_order' => $this->config->get('itella_cod_sort_order')
-			);
-		}
+    if ($status) {
+      $method_data = array(
+        'code'       => 'itella_cod',
+        'title'      => $this->language->get('text_title'),
+        'terms'      => $terms,
+        'sort_order' => $this->config->get('itella_cod_sort_order')
+      );
+    }
 
-		return $method_data;
+    return $method_data;
   }
-  
+
   private function getShippingMethodModule($shipping_method)
   {
     if (!isset($shipping_method['code'])) {
