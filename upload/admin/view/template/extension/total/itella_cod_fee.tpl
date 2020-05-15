@@ -8,6 +8,7 @@
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
         <?php } ?>
       </ul>
+      <span class="itella-version">v<?= $itella_cod_fee_version; ?></span>
     </div>
   </div>
   <div class="container-fluid">

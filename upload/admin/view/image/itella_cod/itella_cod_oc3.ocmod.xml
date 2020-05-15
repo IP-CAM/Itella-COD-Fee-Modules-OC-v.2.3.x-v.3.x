@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <modification>
-  <name>Itella COD Base Mod for OC 2.3</name>
+  <name>Itella COD Base Mod for OC 3</name>
   <version>1.0</version>
   <author>Mijora</author>
   <link>https://www.mijora.lt</link>
@@ -10,26 +10,26 @@
 
   <file path="admin/controller/common/column_left.php">
     <operation>
-      <search><![CDATA[$extension = array();]]></search>
+      <search><![CDATA[$marketplace = array();]]></search>
       <add position="after"><![CDATA[
         // Itella COD Admin menu
         $this->load->language('extension/payment/itella_cod');
         if ($this->user->hasPermission('access', 'extension/payment/itella_cod')) {
           $itella_cod[] = array(
             'name'     => $this->language->get('menu_itella_cod_settings'),
-            'href'     => $this->url->link('extension/payment/itella_cod', 'token=' . $this->session->data['token'], true),
+            'href'     => $this->url->link('extension/payment/itella_cod', 'user_token=' . $this->session->data['user_token'], true),
             'children' => array()
           );
         }
         if ($this->user->hasPermission('access', 'extension/total/itella_cod_fee')) {
           $itella_cod[] = array(
             'name'     => $this->language->get('menu_itella_cod_fee_settings'),
-            'href'     => $this->url->link('extension/total/itella_cod_fee', 'token=' . $this->session->data['token'], true),
+            'href'     => $this->url->link('extension/total/itella_cod_fee', 'user_token=' . $this->session->data['user_token'], true),
             'children' => array()
           );
         }
         if ($this->user->hasPermission('access', 'extension/payment/itella_cod')) {
-          $extension[] = array(
+          $marketplace[] = array(
             'name'     => $this->language->get('menu_itella_cod'),
             'href'     => '',
             'children' => $itella_cod

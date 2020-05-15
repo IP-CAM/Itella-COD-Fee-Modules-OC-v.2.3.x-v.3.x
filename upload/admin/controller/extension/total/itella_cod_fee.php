@@ -1,22 +1,25 @@
 <?php
-class ControllerExtensionTotalItellaCodFee extends Controller {
+class ControllerExtensionTotalItellaCodFee extends Controller
+{
 	private $error = array();
+	private $_version = '1.1.0';
 
-	public function index() {
+	public function index()
+	{
 		$this->load->language('extension/total/itella_cod_fee');
 
 		$this->document->setTitle($this->language->get('heading_title'));
 
-		$this->load->model('setting/setting');
-
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-
-			$this->model_setting_setting->editSetting('itella_cod_fee', $this->request->post);
+			$this->prepPostData();
+			$this->saveSettings($this->request->post);
 
 			$this->session->data['success'] = $this->language->get('text_success');
 
-			$this->response->redirect($this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=total', true));
+			$this->response->redirect($this->url->link('extension/total/itella_cod_fee', $this->getUserToken(), true));
 		}
+
+		$data['itella_cod_fee_version'] = $this->_version;
 
 		$data['heading_title'] = $this->language->get('heading_title');
 
@@ -47,72 +50,69 @@ class ControllerExtensionTotalItellaCodFee extends Controller {
 			$data['error_warning'] = '';
 		}
 
+		if (isset($this->session->data['success'])) {
+			$data['success'] = $this->session->data['success'];
+
+			unset($this->session->data['success']);
+		} else {
+			$data['success'] = '';
+		}
+
 		$data['breadcrumbs'] = array();
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_home'),
-			'href' => $this->url->link('common/dashboard', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('common/dashboard', $this->getUserToken(), true)
 		);
+
+		$extension_home = 'extension';
+		if (version_compare(VERSION, '3.0.0', '>=')) {
+			$extension_home = 'marketplace';
+		}
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('text_extension'),
-			'href' => $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=total', true)
+			'href' => $this->url->link($extension_home . '/extension', $this->getUserToken() . '&type=total', true)
 		);
 
 		$data['breadcrumbs'][] = array(
 			'text' => $this->language->get('heading_title'),
-			'href' => $this->url->link('extension/total/itella_cod_fee', 'token=' . $this->session->data['token'], true)
+			'href' => $this->url->link('extension/total/itella_cod_fee', $this->getUserToken(), true)
 		);
 
-		$data['action'] = $this->url->link('extension/total/itella_cod_fee', 'token=' . $this->session->data['token'], true);
+		$data['action'] = $this->url->link('extension/total/itella_cod_fee', $this->getUserToken(), true);
 
-		$data['cancel'] = $this->url->link('extension/extension', 'token=' . $this->session->data['token'] . '&type=total', true);
+		$data['cancel'] = $this->url->link($extension_home . '/extension', $this->getUserToken() . '&type=total', true);
 
-    foreach(array(
-      'status', 'total', 'tax_class_id', 'sort_order',
-      'total_min', 'total_max',
-      'fee_type', 'fee_flat', 'fee_perc'
-    ) as $key) {
-      if (isset($this->request->post['itella_cod_fee_' . $key])) {
-        $data['itella_cod_fee_' . $key] = $this->request->post['itella_cod_fee_' . $key];
-      } else {
-        $data['itella_cod_fee_' . $key] = $this->config->get('itella_cod_fee_' . $key);
-      }
-    }
+		// settings
+		foreach (array(
+			'total', 'tax_class_id',
+			'total_min', 'total_max',
+			'fee_type', 'fee_flat', 'fee_perc'
+		) as $key) {
+			if (isset($this->request->post['itella_cod_fee_' . $key])) {
+				$data['itella_cod_fee_' . $key] = $this->request->post['itella_cod_fee_' . $key];
+			} else {
+				$data['itella_cod_fee_' . $key] = $this->config->get('itella_cod_fee_' . $key);
+			}
+		}
 
-		// if (isset($this->request->post['itella_cod_fee_total'])) {
-		// 	$data['itella_cod_fee_total'] = $this->request->post['itella_cod_fee_total'];
-		// } else {
-		// 	$data['itella_cod_fee_total'] = $this->config->get('itella_cod_fee_total');
-		// }
-
-		// if (isset($this->request->post['itella_cod_fee_fee'])) {
-		// 	$data['itella_cod_fee_fee'] = $this->request->post['itella_cod_fee_fee'];
-		// } else {
-		// 	$data['itella_cod_fee_fee'] = $this->config->get('itella_cod_fee_fee');
-		// }
-
-		// if (isset($this->request->post['itella_cod_fee_tax_class_id'])) {
-		// 	$data['itella_cod_fee_tax_class_id'] = $this->request->post['itella_cod_fee_tax_class_id'];
-		// } else {
-		// 	$data['itella_cod_fee_tax_class_id'] = $this->config->get('itella_cod_fee_tax_class_id');
-		// }
+		// version specific settings
+		$prefix = '';
+		if (version_compare(VERSION, '3.0.0', '>=')) {
+			$prefix = 'total_';
+		}
+		foreach (array('status', 'sort_order') as $key) {
+			if (isset($this->request->post[$prefix . 'itella_cod_fee_' . $key])) {
+				$data['itella_cod_fee_' . $key] = $this->request->post[$prefix . 'itella_cod_fee_' . $key];
+			} else {
+				$data['itella_cod_fee_' . $key] = $this->config->get($prefix . 'itella_cod_fee_' . $key);
+			}
+		}
 
 		$this->load->model('localisation/tax_class');
 
 		$data['tax_classes'] = $this->model_localisation_tax_class->getTaxClasses();
-
-		// if (isset($this->request->post['itella_cod_fee_status'])) {
-		// 	$data['itella_cod_fee_status'] = $this->request->post['itella_cod_fee_status'];
-		// } else {
-		// 	$data['itella_cod_fee_status'] = $this->config->get('itella_cod_fee_status');
-		// }
-
-		// if (isset($this->request->post['itella_cod_fee_sort_order'])) {
-		// 	$data['itella_cod_fee_sort_order'] = $this->request->post['itella_cod_fee_sort_order'];
-		// } else {
-		// 	$data['itella_cod_fee_sort_order'] = $this->config->get('itella_cod_fee_sort_order');
-		// }
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -121,11 +121,50 @@ class ControllerExtensionTotalItellaCodFee extends Controller {
 		$this->response->setOutput($this->load->view('extension/total/itella_cod_fee', $data));
 	}
 
-	protected function validate() {
+	protected function validate()
+	{
 		if (!$this->user->hasPermission('modify', 'extension/total/itella_cod_fee')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
 
 		return !$this->error;
+	}
+
+	private function prepPostData()
+	{
+		// Opencart 3 expects to start with total_
+		if (version_compare(VERSION, '3.0.0', '>=') && isset($this->request->post['itella_cod_fee_status'])) {
+			$this->request->post['total_itella_cod_fee_status'] = $this->request->post['itella_cod_fee_status'];
+			unset($this->request->post['itella_cod_fee_status']);
+		}
+
+		// Opencart 3 expects to start with total_
+		if (version_compare(VERSION, '3.0.0', '>=') && isset($this->request->post['itella_cod_fee_sort_order'])) {
+			$this->request->post['total_itella_cod_fee_sort_order'] = $this->request->post['itella_cod_fee_sort_order'];
+			unset($this->request->post['itella_cod_fee_sort_order']);
+		}
+	}
+
+	private function saveSettings($data)
+	{
+		$this->load->model('setting/setting');
+
+		foreach ($data as $key => $value) {
+			$query = $this->db->query("SELECT setting_id FROM `" . DB_PREFIX . "setting` WHERE `code` = 'itella_cod_fee' AND `key` = '" . $this->db->escape($key) . "'");
+			if ($query->num_rows) {
+				$id = $query->row['setting_id'];
+				$this->db->query("UPDATE " . DB_PREFIX . "setting SET `value` = '" . $this->db->escape($value) . "', serialized = '0' WHERE `setting_id` = '$id'");
+			} else {
+				$this->db->query("INSERT INTO `" . DB_PREFIX . "setting` SET store_id = '0', `code` = 'itella_cod_fee', `key` = '$key', `value` = '" . $this->db->escape($value) . "'");
+			}
+		}
+	}
+
+	private function getUserToken()
+	{
+		if (version_compare(VERSION, '3.0.0', '>=')) {
+			return 'user_token=' . $this->session->data['user_token'];
+		}
+		return 'token=' . $this->session->data['token'];
 	}
 }
