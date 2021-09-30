@@ -21,11 +21,6 @@ class ModelExtensionPaymentItellaCOD extends Model
       if ($shipping_methods && !in_array($method, $shipping_methods)) {
         $status = false;
       }
-
-      // Itella specific: for itellashipping show only when its itellashipping.courier
-      if ($method == 'itellashipping' && $this->getShippingMethodname($this->session->data['shipping_method']) != 'courier') {
-        $status = false;
-      }
     }
 
     if ($this->config->get('itella_cod_total') > 0 && $this->config->get('itella_cod_total') > $total) {
