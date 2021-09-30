@@ -2,7 +2,7 @@
 class ControllerExtensionPaymentItellaCod extends Controller
 {
   private $error = array();
-  private $_version = '1.1.0';
+  private $_version = '1.1.1';
 
   public function install()
   {
