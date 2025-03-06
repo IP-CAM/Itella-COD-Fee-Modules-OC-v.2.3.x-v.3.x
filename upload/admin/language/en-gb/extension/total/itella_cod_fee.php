@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title'] = 'Itella COD Fee';
+$_['heading_title'] = 'Smartposti COD Fee';
 
 // Button
 $_['button_save']   = 'Save';
@@ -13,8 +13,8 @@ $_['text_enabled']    = 'Enabled';
 $_['text_disabled']   = 'Disabled';
 $_['text_none']       = '-- None --';
 $_['text_total']      = 'Order Totals';
-$_['text_success']    = 'Success: You have modified Itella COD Fee!';
-$_['text_edit']       = 'Itella COD Fee Settings';
+$_['text_success']    = 'Success: You have modified Smartposti COD Fee!';
+$_['text_edit']       = 'Smartposti COD Fee Settings';
 $_['text_fee_flat']   = 'Flat';
 $_['text_fee_perc']   = 'Percentage';
 
@@ -31,4 +31,4 @@ $_['entry_status']      = 'Status';
 $_['entry_sort_order']  = 'Sort Order';
 
 // Error
-$_['error_permission'] = 'Warning: You do not have permission to modify Itella COD Fee!';
+$_['error_permission'] = 'Warning: You do not have permission to modify Smartposti COD Fee!';

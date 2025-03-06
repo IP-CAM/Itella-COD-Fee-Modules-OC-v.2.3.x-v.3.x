@@ -1,3 +1,3 @@
 <?php
 // Text
-$_['text_title']  = 'Itella COD';
+$_['text_title']  = 'Smartposti COD';
