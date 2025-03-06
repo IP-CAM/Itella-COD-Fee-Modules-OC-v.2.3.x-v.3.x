@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title'] = 'Itella COD Mokestis';
+$_['heading_title'] = 'Smartposti COD Mokestis';
 
 // Button
 $_['button_save']   = 'Saugoti';
@@ -13,8 +13,8 @@ $_['text_enabled']    = 'Įjungta';
 $_['text_disabled']   = 'Išjungta';
 $_['text_none']       = '-- Nieko --';
 $_['text_total']      = 'Užsakymo viso';
-$_['text_success']    = 'Pavyko: Itella COD Mokestis nustatymai sėkmingai modifikuoti!';
-$_['text_edit']       = 'Itella COD Mokestis nustatymai';
+$_['text_success']    = 'Pavyko: Smartposti COD Mokestis nustatymai sėkmingai modifikuoti!';
+$_['text_edit']       = 'Smartposti COD Mokestis nustatymai';
 $_['text_fee_flat']   = 'Fiksuotas';
 $_['text_fee_perc']   = 'Procentai';
 

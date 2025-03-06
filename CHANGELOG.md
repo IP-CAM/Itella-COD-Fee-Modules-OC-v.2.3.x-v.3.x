@@ -1,5 +1,10 @@
 # Changelog
 
+## [Unreleased]
+### Changed
+- Changed name from "Smartpost Itella" to "Smartposti"
+- Changed logo to "Smartposti"
+
 ## [1.1.1] - 2021-09-30
 ### Changed
 - Removed limitation to Smartpost Pickups (Itella-Shipping from 1.2.12 version supports COD for pickup points)
