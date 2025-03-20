@@ -1,2 +1,2 @@
 <?php
-$_['text_title'] = 'Itella COD Fee';
+$_['text_title'] = 'Smartposti COD Fee';

@@ -2,7 +2,7 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <h1><img src="view/image/itella_cod/logo.png" alt="Itella Logo"><?php echo $heading_title; ?></h1>
+      <h1><img src="view/image/itella_cod/logo.png" alt="Smartposti Logo"><?php echo $heading_title; ?></h1>
       <ul class="breadcrumb">
         <?php foreach ($breadcrumbs as $breadcrumb) { ?>
         <li><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a></li>
