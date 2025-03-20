@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.1.2] - 2025-03-20
 ### Changed
 - Changed name from "Smartpost Itella" to "Smartposti"
 - Changed logo to "Smartposti"
