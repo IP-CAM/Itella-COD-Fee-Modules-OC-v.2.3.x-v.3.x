@@ -2,7 +2,7 @@
 class ControllerExtensionTotalItellaCodFee extends Controller
 {
 	private $error = array();
-	private $_version = '1.1.1';
+	private $_version = '1.1.2';
 
 	public function index()
 	{
